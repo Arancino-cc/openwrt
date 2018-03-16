@@ -37,6 +37,7 @@
 		};
 	};
 
+
 	gpio-keys-polled {
 		compatible = "gpio-keys-polled";
 		#address-cells = <1>;
@@ -48,6 +49,41 @@
 			gpios = <&gpio1 6 GPIO_ACTIVE_LOW>;
 			linux,code = <KEY_WPS_BUTTON>;
 		};
+	};
+
+   clocks {
+       /* fixed crystal dedicated to mpc251x */
+       clk16m: clk@1 {
+           compatible = "fixed-clock";
+           reg=<1>;
+           #clock-cells = <0>;
+           clock-frequency = <16000000>;
+           clock-output-names = "clk16m";
+       };
+   };
+
+   spi {
+		compatible = "spi-gpio";
+		#address-cells = <0x1>;
+		ranges;
+
+		gpio-sck = <&gpio0 15 0>;
+		gpio-miso = <&gpio0 16 0>;
+		gpio-mosi = <&gpio0 17 0>;
+		cs-gpios = <&gpio0 14 0>;
+		num-chipselects = <1>;
+		status = "ok";
+
+        can0: mcp2515@0 {
+                reg = <0>;
+                compatible = "microchip,mcp2515";
+
+                spi-max-frequency = <10000000>;
+                interrupt-parent = <&gpio0>;
+                interrupts = <18 0x2>;
+                clocks = <10000000>;
+                oscillator = <10000000>;
+                };
 	};
 };
 
@@ -65,11 +101,6 @@
 
 		i2s {
 			ralink,group = "i2s";
-			ralink,function = "gpio";
-		};
-
-		spis {
-			ralink,group = "spis";
 			ralink,function = "gpio";
 		};
 
@@ -93,7 +124,7 @@
 	status = "okay";
 
 	pinctrl-names = "default";
-	pinctrl-0 = <&spi_pins>, <&spi_cs1_pins>;
+	pinctrl-0 = <&spi_pins>;
 
 	m25p80@0 {
 		#address-cells = <1>;
@@ -125,14 +156,6 @@
 			reg = <0x50000 0x1fb0000>;
 		};
 	};
-
-	spidev@1 {
-		#address-cells = <1>;
-		#size-cells = <1>;
-		compatible = "linux,spidev";
-		reg = <1>;
-		spi-max-frequency = <40000000>;
-	};
 };
 
 &i2c {
@@ -144,10 +167,6 @@
 };
 
 &uart2 {
-	status = "okay";
-};
-
-&pwm {
 	status = "okay";
 };
 
