@@ -17,11 +17,13 @@ platform_check_image() {
 	ai-br100|\
 	air3gii|\
 	alfa-network,ac1200rm|\
+	alfa-network,awusfree1|\
 	all0239-3g|\
 	all0256n-4M|\
 	all0256n-8M|\
 	all5002|\
 	all5003|\
+	mediatek,ap-mt7621a-v60|\
 	ar725w|\
 	asl26555-8M|\
 	asl26555-16M|\
@@ -248,6 +250,7 @@ platform_check_image() {
 	tplink,c20-v4|\
 	tplink,c50-v3|\
 	tplink,tl-mr3420-v5|\
+	tplink,tl-wr902ac-v3|\
 	tl-wr840n-v4|\
 	tl-wr840n-v5|\
 	tl-wr841n-v13)
@@ -263,6 +266,13 @@ platform_check_image() {
 	dir-645|\
 	dir-860l-b1)
 		[ "$magic" != "5ea3a417" ] && {
+			echo "Invalid image type."
+			return 1
+		}
+		return 0
+		;;
+	dlink,dwr-116-a1)
+		[ "$magic" != "0404242b" ] && {
 			echo "Invalid image type."
 			return 1
 		}

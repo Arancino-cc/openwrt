@@ -60,6 +60,9 @@ alfa-network,ac1200rm)
 	set_wifi_led "$boardname:green:wlan2g" "wlan1"
 	ucidef_set_led_default "wps" "wps" "$boardname:green:wps" "0"
 	;;
+alfa-network,awusfree1)
+	set_wifi_led "$boardname:blue:wlan"
+	;;
 all0256n-4M|\
 all0256n-8M)
 	ucidef_set_rssimon "wlan0" "200000" "1"
@@ -155,6 +158,7 @@ dir-615-h1)
 	set_wifi_led "rt2800pci-phy0::radio"
 	;;
 dir-620-d1|\
+dlink,dwr-116-a1|\
 mzk-ex300np)
 	set_wifi_led "$boardname:green:wifi"
 	;;
@@ -409,6 +413,11 @@ tplink,tl-mr3420-v5)
 	set_wifi_led "$boardname:green:wlan"
 	ucidef_set_led_switch "lan" "lan" "$boardname:green:lan" "switch0" "0x1e"
 	ucidef_set_led_switch "wan" "wan" "$boardname:green:wan" "switch0" "0x01"
+	;;
+tplink,tl-wr902ac-v3)
+	set_usb_led "$boardname:green:usb"
+	ucidef_set_led_netdev "wlan2g" "wlan2g" "$boardname:green:wlan" "wlan0"
+	ucidef_set_led_switch "lan" "lan" "$boardname:green:lan" "switch0" "0x10"
 	;;
 u25awf-h1)
 	set_wifi_led "u25awf:red:wifi"
