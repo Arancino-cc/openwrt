@@ -35,7 +35,7 @@ DISABLE_NLS:=--disable-nls
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/util-linux/Default
+define Package/util-linux
   SECTION:=utils
   CATEGORY:=Utilities
   DEPENDS:= +librt
@@ -235,6 +235,15 @@ endef
 
 define Package/hwclock/description
  hwclock is a tool for accessing the Hardware Clock
+endef
+
+define Package/ldattach
+$(call Package/util-linux/Default)
+  TITLE:=a shell command interface to attach a line discipline
+endef
+
+define Package/ldattach/description
+ ldattach give the possibility to attach a line discipline to a tty
 endef
 
 define Package/logger
@@ -609,6 +618,11 @@ define Package/hwclock/install
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/hwclock $(1)/usr/sbin/
 endef
 
+define Package/ldattach/install
+	$(INSTALL_DIR) $(1)/usr/sbin
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/ldattach $(1)/usr/sbin/
+endef
+
 define Package/logger/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/logger $(1)/usr/bin/
@@ -742,6 +756,7 @@ $(eval $(call BuildPackage,flock))
 $(eval $(call BuildPackage,fstrim))
 $(eval $(call BuildPackage,getopt))
 $(eval $(call BuildPackage,hwclock))
+$(eval $(call BuildPackage,ldattach))
 $(eval $(call BuildPackage,logger))
 $(eval $(call BuildPackage,look))
 $(eval $(call BuildPackage,losetup))
