@@ -136,3 +136,47 @@ define KernelPackage/sound-mt7620/description
 endef
 
 $(eval $(call KernelPackage,sound-mt7620))
+
+MCUIO_AUTOLOAD:= \
+	mcuio \
+	mcuio-hc-dev \
+	mcuio-hc-drv \
+	mcuio-soft-local-irq-ctrl-msg \
+	mcuio-soft-hc \
+	mcuio-hc-ldisc \
+	regmap-mcuio-remote \
+	mcuio-irq-test \
+	mcuio_adc \
+	gpio-mcuio \
+	i2c-mcuio \
+	mcuio-shields-manprobe
+
+define KernelPackage/mcuio
+  SUBMENU:=Other modules
+  TITLE:=MCUIO
+  DEPENDS:=+kmod-i2c-core +kmod-regmap +kmod-iio-core @(TARGET_ramips_mt76x8)
+  KCONFIG:= \
+        CONFIG_MCUIO \
+        CONFIG_MCUIO_LDISC_HC \
+        CONFIG_MCUIO_SHIELD_MANUAL_PROBE
+  FILES:= \
+        $(LINUX_DIR)/drivers/mcuio/mcuio.ko \
+        $(LINUX_DIR)/drivers/mcuio/mcuio-hc-dev.ko \
+        $(LINUX_DIR)/drivers/mcuio/mcuio-hc-drv.ko \
+        $(LINUX_DIR)/drivers/mcuio/mcuio-hc-ldisc.ko \
+        $(LINUX_DIR)/drivers/mcuio/mcuio-shields-manprobe.ko \
+        $(LINUX_DIR)/drivers/base/regmap/regmap-mcuio-remote.ko \
+        $(LINUX_DIR)/drivers/mcuio/mcuio-soft-local-irq-ctrl-msg.ko \
+        $(LINUX_DIR)/drivers/mcuio/mcuio-soft-hc.ko \
+        $(LINUX_DIR)/drivers/mcuio/mcuio-irq-test.ko \
+		$(LINUX_DIR)/drivers/iio/adc/mcuio_adc.ko \
+		$(LINUX_DIR)/drivers/gpio/gpio-mcuio.ko \
+		$(LINUX_DIR)/drivers/i2c/busses/i2c-mcuio.ko
+  AUTOLOAD:=$(call AutoLoad,98,$(MCUIO_AUTOLOAD))
+endef
+
+define KernelPackage/mcuio/description
+  Kernel modules for MCU I/O 
+endef
+
+$(eval $(call KernelPackage,mcuio))
